@@ -8,3 +8,11 @@ include_directories(
 )
 
 add_executable(VTechButtonGame main.cpp)
+
+##################
+# Tests
+##################
+find_package(GTest REQUIRED)
+enable_testing()
+add_executable(game_tests tests/main.cpp)
+target_link_libraries(game_tests GTest::GTest GTest::Main)
