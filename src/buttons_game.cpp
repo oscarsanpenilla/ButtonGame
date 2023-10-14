@@ -1,14 +1,35 @@
 #include <iostream>
 #include "games/buttons_game.h"
+#include "games/impl/buttons_game_impl.h"
 #include "errors.h"
 
-VTech::ButtonsGame::ButtonsGame(const std::string &secret_combination)
-	: valid_chars_ (std::vector<char>{'A', 'B', 'C'})
+namespace VTech {
+
+ButtonsGame::ButtonsGame() : impl_(std::make_unique<ButtonsGameImpl>()) { }
+
+ButtonsGame::~ButtonsGame() = default;
+
+void ButtonsGame::run() { impl_->run(); }
+
+void ButtonsGame::onButtonPress(char btn) { impl_->onButtonPress(btn); }
+
+ButtonsGameImpl::ButtonsGameImpl(const std::string &secret_combination)
+		: valid_chars_ (std::vector<char>{'A', 'B', 'C'})
 {
 	setLights({LedState::OFF, LedState::OFF, LedState::OFF});
 }
 
-void VTech::ButtonsGame::run() {
+void ButtonsGameImpl::generatePass() {
+	password_generator_ = std::make_unique<PasswordGenerator>(valid_chars_);
+	secret_combination_ = password_generator_->generate();
+}
+
+LEDstates VTech::ButtonsGameImpl::getLights() {
+	return led_states_;
+}
+
+void ButtonsGameImpl::run()
+{
 	while (true) {
 
 		generatePass();
@@ -32,7 +53,8 @@ void VTech::ButtonsGame::run() {
 	}
 }
 
-void VTech::ButtonsGame::onButtonPress(char btn) {
+void ButtonsGameImpl::onButtonPress(char btn)
+{
 	auto checkGuess = [this](char usr_guess, int pos) {
 		if (usr_guess == secret_combination_.at(pos))
 			return LedState::GREEN;
@@ -57,26 +79,17 @@ void VTech::ButtonsGame::onButtonPress(char btn) {
 	setLights(new_state);
 }
 
-void VTech::ButtonsGame::generatePass() {
-	password_generator_ = std::make_unique<PasswordGenerator>(valid_chars_);
-	secret_combination_ = password_generator_->generate();
-}
-
-VTech::ButtonsGame::LEDstates VTech::ButtonsGame::getLights() {
-	return led_states_;
-}
-
-void VTech::ButtonsGame::setLights(const VTech::ButtonsGame::LEDstates &states) {
+void ButtonsGameImpl::setLights(const LEDstates &states) {
 	led_states_ = states;
 }
 
-void VTech::ButtonsGame::inputValidation(char input) {
+void ButtonsGameImpl::inputValidation(char input) {
 	bool found = std::find(valid_chars_.begin(), valid_chars_.end(), input) != valid_chars_.end();
 	if (!found)
 		throw GameErrorInput("The pressed button isn't valid");
 }
 
-bool VTech::ButtonsGame::passValidation() {
+bool ButtonsGameImpl::passValidation() {
 	return secret_combination_ == combination_;
 }
 
@@ -88,6 +101,4 @@ std::ostream &VTech::operator<<(std::ostream &os, const VTech::ButtonsGame &game
 
 VTech::ButtonsGame::~ButtonsGame() {
 
-}
-
-
+}//namespace VTech

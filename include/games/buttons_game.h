@@ -40,11 +40,11 @@ struct ButtonsGamePrinter {
 };
 
 
+using LEDstates = std::vector<LedState>;
+class ButtonsGameImpl;
 class ButtonsGame: public GameInterface {
 public:
-	using LEDstates = std::vector<LedState>;
-
-	explicit ButtonsGame(const std::string& secret_combination="");
+	ButtonsGame();
 	virtual ~ButtonsGame();
 
 	void run() override;
@@ -54,19 +54,7 @@ public:
 	friend std::ostream& operator<<(std::ostream& os, const ButtonsGame& game);
 
 protected:
-	// TODO: use impl idiom to hide implementatin details
-	void generatePass();
-	LEDstates getLights();
-	void setLights(const LEDstates& states);
-	void inputValidation(char input);
-	bool passValidation();
-
-	std::string combination_;
-	std::string secret_combination_;
-	int curr_idx_ = 0;
-	LEDstates led_states_;
-	std::vector<char> valid_chars_;
-	std::unique_ptr<PasswordGenerator> password_generator_;
+	std::unique_ptr<ButtonsGameImpl> impl_;
 };
 
 
