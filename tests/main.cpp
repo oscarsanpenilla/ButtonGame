@@ -1,18 +1,18 @@
 #include <gtest/gtest.h>
-#include "games/buttons_game.h"
+#include "games/impl/buttons_game_impl.h"
 #include "errors.h"
 
 using namespace VTech;
 
 TEST(VTechGame, init) {
-	ButtonsGame game;
+	ButtonsGameImpl game;
 	auto leds = game.getLights();
 	for (const auto& state: leds)
 		EXPECT_EQ(state, LedState::OFF) << "Expected all leds off";
 }
 
 TEST(VTechGame, onButtonPressValid) {
-	ButtonsGame game;
+	ButtonsGameImpl game;
 	game.onButtonPress('A');
 	game.onButtonPress('B');
 	game.onButtonPress('C');
@@ -29,16 +29,16 @@ TEST(VTechGame, onButtonPressValid) {
 
 TEST(VTechGame, singlePress) {
 	{
-		ButtonsGame game("ABC");
+		ButtonsGameImpl game("ABC");
 		game.onButtonPress('A');
 
 		auto leds = game.getLights();
 		ASSERT_EQ(leds[0], LedState::OFF);
 		ASSERT_EQ(leds[1], LedState::OFF);
-		ASSERT_EQ(leds[2], LedState::GREEN) << "LED3 expected to be GREEN since the position and value matches!"
+		ASSERT_EQ(leds[2], LedState::GREEN) << "LED3 expected to be GREEN since the position and value matches!";
 	}
 	{
-		ButtonsGame game("ABC");
+		ButtonsGameImpl game("ABC");
 		game.onButtonPress('B');
 
 		auto leds = game.getLights();
@@ -47,7 +47,7 @@ TEST(VTechGame, singlePress) {
 		ASSERT_EQ(leds[2], LedState::ORANGE) << "LED3 expected to be ORANGE since B is contained in the password";
 	}
 	{
-		ButtonsGame game("AAA");
+		ButtonsGameImpl game("AAA");
 		game.onButtonPress('B');
 
 		auto leds = game.getLights();
@@ -59,7 +59,7 @@ TEST(VTechGame, singlePress) {
 
 TEST(VTechGame, doublePress) {
 	{
-		ButtonsGame game("ABC");
+		ButtonsGameImpl game("ABC");
 		game.onButtonPress('A');
 		game.onButtonPress('B');
 
@@ -69,7 +69,7 @@ TEST(VTechGame, doublePress) {
 		ASSERT_EQ(leds[2], LedState::GREEN);
 	}
 	{
-		ButtonsGame game("ABC");
+		ButtonsGameImpl game("ABC");
 		game.onButtonPress('A');
 		game.onButtonPress('A');
 
@@ -79,7 +79,7 @@ TEST(VTechGame, doublePress) {
 		ASSERT_EQ(leds[2], LedState::ORANGE);
 	}
 	{
-		ButtonsGame game("ABC");
+		ButtonsGameImpl game("ABC");
 		game.onButtonPress('C');
 		game.onButtonPress('B');
 
@@ -89,7 +89,7 @@ TEST(VTechGame, doublePress) {
 		ASSERT_EQ(leds[2], LedState::GREEN);
 	}
 	{
-		ButtonsGame game("AAA");
+		ButtonsGameImpl game("AAA");
 		game.onButtonPress('C');
 		game.onButtonPress('A');
 
@@ -102,7 +102,7 @@ TEST(VTechGame, doublePress) {
 
 TEST(VTechGame, triplePress) {
 	{
-		ButtonsGame game("ABC");
+		ButtonsGameImpl game("ABC");
 		game.onButtonPress('A');
 		game.onButtonPress('B');
 		game.onButtonPress('B');
@@ -113,7 +113,7 @@ TEST(VTechGame, triplePress) {
 		ASSERT_EQ(leds[2], LedState::ORANGE);
 	}
 	{
-		ButtonsGame game("ABC");
+		ButtonsGameImpl game("ABC");
 		game.onButtonPress('A');
 		game.onButtonPress('A');
 		game.onButtonPress('A');
@@ -124,7 +124,7 @@ TEST(VTechGame, triplePress) {
 		ASSERT_EQ(leds[2], LedState::ORANGE);
 	}
 	{
-		ButtonsGame game("ABC");
+		ButtonsGameImpl game("ABC");
 		game.onButtonPress('A');
 		game.onButtonPress('B');
 		game.onButtonPress('C');
@@ -135,7 +135,7 @@ TEST(VTechGame, triplePress) {
 		ASSERT_EQ(leds[2], LedState::GREEN);
 	}
 	{
-		ButtonsGame game("AAA");
+		ButtonsGameImpl game("AAA");
 		game.onButtonPress('C');
 		game.onButtonPress('A');
 		game.onButtonPress('B');

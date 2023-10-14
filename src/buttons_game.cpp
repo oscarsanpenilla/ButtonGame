@@ -16,6 +16,11 @@ void ButtonsGame::onButtonPress(char btn) { impl_->onButtonPress(btn); }
 ButtonsGameImpl::ButtonsGameImpl(const std::string &secret_combination)
 		: valid_chars_ (std::vector<char>{'A', 'B', 'C'})
 {
+	if (!secret_combination.empty())
+		secret_combination_ = secret_combination;
+	else
+		generatePass();
+
 	setLights({LedState::OFF, LedState::OFF, LedState::OFF});
 }
 
@@ -66,7 +71,7 @@ void ButtonsGameImpl::onButtonPress(char btn)
 		return LedState::RED;
 	};
 
-//	inputValidation(btn);
+	inputValidation(btn);
 	LEDstates prev_state = getLights();
 
 	// Shift led colors
@@ -77,6 +82,9 @@ void ButtonsGameImpl::onButtonPress(char btn)
 	};
 
 	setLights(new_state);
+
+	// Update curr_idx and ensure it's within the range
+	curr_idx_ = (curr_idx_ + 1) % 3;
 }
 
 void ButtonsGameImpl::setLights(const LEDstates &states) {
@@ -93,12 +101,11 @@ bool ButtonsGameImpl::passValidation() {
 	return secret_combination_ == combination_;
 }
 
-std::ostream &VTech::operator<<(std::ostream &os, const VTech::ButtonsGame &game) {
-	os << "History: " << game.combination_ << "\n";
-//	os << "LEDs: " << game.led_states_[0] << "\n";
-	return os;
-}
-
-VTech::ButtonsGame::~ButtonsGame() {
+// TODO: implement game console output
+//	std::ostream &VTech::operator<<(std::ostream &os, const VTech::ButtonsGame &game) {
+//		os << "History: " << game.combination_ << "\n";
+////	os << "LEDs: " << game.led_states_[0] << "\n";
+//		return os;
+//	}
 
 }//namespace VTech
