@@ -5,6 +5,7 @@
 
 namespace VT {
 
+class PasswordGenerator;
 class ButtonsGameImpl {
 public:
 	explicit ButtonsGameImpl(const std::string& secret_combination="");

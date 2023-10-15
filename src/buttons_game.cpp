@@ -2,6 +2,7 @@
 #include "games/buttons_game.h"
 #include "games/impl/buttons_game_impl.h"
 #include "errors.h"
+#include "password_generator.h"
 
 namespace VT {
 
