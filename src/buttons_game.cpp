@@ -45,6 +45,17 @@ void ButtonsGameImpl::reset() {
 
 void ButtonsGameImpl::run()
 {
+	std::cout << "  *************   GAME INSTRUCTIONS   ************  \n"
+				 "  The  user has to guess a sequence of 3 buttons.\n"
+	             "  The sequence can contain any combination\n"
+				 "  e.g. BAC, CCB, AAA.\n"
+	             "  The LEDs should always represent the result of the "
+				 "  last 3 button presses.\n"
+	             "   - LED 3 will always represent the most recent button pressed\n"
+	             "   - LED 2 the one before that\n"
+	             "   - LED 1 the one before that\n"
+				 "  ***********************************************  \n";
+
 	while (true) {
 		reset();
 		generatePass();
