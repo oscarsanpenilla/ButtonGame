@@ -3,12 +3,28 @@
 
 namespace VT {
 
+/**
+ * @class LightController
+ * @brief This class emulates real hardware control of LED lights.
+ */
 class LightController {
 public:
-	LightController();
+    /**
+     * @brief Default constructor for LightController.
+     */
+    LightController();
 
-	LEDstates getLights() const;
-	void setLights(const LEDstates& states);
+    /**
+     * @brief Get the current state of the LED lights.
+     * @return The current LED state.
+     */
+    LEDstates getLights() const;
+
+    /**
+     * @brief Set the state of the LED lights.
+     * @param states The new LED state to set.
+     */
+    void setLights(const LEDstates& states);
 
 protected:
 	LEDstates led_states_;

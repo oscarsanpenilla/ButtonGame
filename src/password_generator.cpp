@@ -8,7 +8,7 @@ PasswordGenerator::PasswordGenerator(const std::vector<char> &characters) : char
 	srand(time(0));
 }
 
-std::string PasswordGenerator::generate() const {
+std::string PasswordGenerator::generate() {
 	std::string password;
 	for (size_t i = 0; i < characters_.size(); ++i)
 		password += characters_.at(rand() % characters_.size());
