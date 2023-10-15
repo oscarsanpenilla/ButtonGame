@@ -1,6 +1,8 @@
 #include <iostream>
+#include "games/buttons_game.h"
 
 int main() {
-	std::cout << "Hello, World!" << std::endl;
+	VTech::ButtonsGame game;
+	game.run();
 	return 0;
 }
