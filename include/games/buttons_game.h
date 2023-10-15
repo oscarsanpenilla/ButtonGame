@@ -25,7 +25,7 @@ public:
 
 	std::string generate() const {
 		std::string password;
-		for (int i = 0; i < characters_.size(); ++i)
+		for (size_t i = 0; i < characters_.size(); ++i)
 			password += characters_.at(rand() % characters_.size());
 
 		return password;

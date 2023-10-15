@@ -19,7 +19,7 @@ TEST(VTechGame, onButtonPressValid) {
 	try {
 		game.onButtonPress('Z');
 	}
-	catch (GameErrorInput& e) {
+	catch (GameErrorInput& ) {
 		ASSERT_TRUE(true);
 	}
 	catch (...) {
