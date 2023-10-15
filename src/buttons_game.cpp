@@ -50,14 +50,19 @@ void ButtonsGameImpl::run()
 
 		printGameStatus();
 
-		// TODO: remove before submit code
-		std::cout << "pass: " << secret_combination_ << "\n";
 		while (!passValidation()) {
 
-			std::cout << "Press one of the Following letters on your keyboard A B C : ";
+		key_in:
 			char btn_input;
-			std::cin >> btn_input;
-			inputValidation(btn_input);
+			try {
+				std::cout << "Press one of the Following letters on your keyboard A B C : ";
+				std::cin >> btn_input;
+				btn_input = toupper(btn_input);
+				inputValidation(btn_input);
+			} catch (GameErrorInput& e) {
+				std::cout << "Invalid input... please try again.\n";
+				goto key_in;
+			}
 
 			onButtonPress(btn_input);
 
