@@ -12,18 +12,18 @@ public:
 	void run();
 	void onButtonPress(char btn);
 
-	LEDstates getLights();
+	LEDstates getLights() const;
 	void setLights(const LEDstates& states);
 	void inputValidation(char input);
 	void generatePass();
-	bool passValidation();
+	bool passValidation() const;
 	void reset();
 	void printGameStatus();
 
 	std::string combination_;
 	std::string secret_combination_;
 	std::string btn_history_;
-	int curr_idx_ = 0;
+	size_t curr_idx_ = 0;
 	LEDstates led_states_;
 	std::vector<char> valid_chars_;
 	std::unique_ptr<PasswordGenerator> password_generator_;

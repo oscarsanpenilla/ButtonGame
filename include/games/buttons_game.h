@@ -34,12 +34,6 @@ protected:
 	const std::vector<char> characters_;
 };
 
-class ButtonsGame;
-struct ButtonsGamePrinter {
-	static std::string print(const ButtonsGame& game);
-};
-
-
 using LEDstates = std::vector<LedState>;
 class ButtonsGameImpl;
 class ButtonsGame: public GameInterface {
@@ -50,8 +44,6 @@ public:
 	void run() override;
 
 	void onButtonPress(char btn);
-
-	friend std::ostream& operator<<(std::ostream& os, const ButtonsGame& game);
 
 protected:
 	std::unique_ptr<ButtonsGameImpl> impl_;

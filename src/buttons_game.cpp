@@ -31,7 +31,7 @@ void ButtonsGameImpl::generatePass() {
 	secret_combination_ = password_generator_->generate();
 }
 
-LEDstates VT::ButtonsGameImpl::getLights() {
+LEDstates VT::ButtonsGameImpl::getLights() const {
 	return led_states_;
 }
 
@@ -71,7 +71,7 @@ void ButtonsGameImpl::run()
 				std::cin >> btn_input;
 				btn_input = toupper(btn_input);
 				inputValidation(btn_input);
-			} catch (GameErrorInput& e) {
+			} catch (GameErrorInput& ) {
 				std::cout << "Invalid input... please try again.\n";
 				goto key_in;
 			}
@@ -95,7 +95,7 @@ void ButtonsGameImpl::printGameStatus() {
 
 void ButtonsGameImpl::onButtonPress(char btn)
 {
-	auto checkGuess = [this](char usr_guess, int pos) {
+	auto checkGuess = [this](char usr_guess, size_t pos) {
 		if (usr_guess == secret_combination_.at(pos))
 			return LedState::GREEN;
 
@@ -119,7 +119,7 @@ void ButtonsGameImpl::onButtonPress(char btn)
 	setLights(new_state);
 
 	// Update curr_idx and ensure it's within the range
-	const int pass_size = secret_combination_.size();
+	const size_t pass_size = secret_combination_.size();
 	curr_idx_ = (curr_idx_ + 1) % pass_size;
 	if (combination_.size() >= pass_size) combination_.clear();
 	combination_ += btn;
@@ -138,7 +138,7 @@ void ButtonsGameImpl::inputValidation(char input) {
 		throw GameErrorInput("The pressed button isn't valid");
 }
 
-bool ButtonsGameImpl::passValidation() {
+bool ButtonsGameImpl::passValidation() const {
 	bool won = true;
 	for (const auto& s: getLights()) { won &= s == LedState::GREEN; }
 	return won;
