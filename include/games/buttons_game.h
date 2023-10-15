@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-namespace VTech {
+namespace VT {
 
 struct GameInterface {
 	virtual void run () = 0;
@@ -57,5 +57,4 @@ protected:
 	std::unique_ptr<ButtonsGameImpl> impl_;
 };
 
-
-}// namespace VTech
+}// namespace VT

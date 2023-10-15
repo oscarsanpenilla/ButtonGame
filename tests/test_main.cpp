@@ -2,16 +2,16 @@
 #include "games/impl/buttons_game_impl.h"
 #include "errors.h"
 
-using namespace VTech;
+using namespace VT;
 
-TEST(VTechGame, init) {
+TEST(ButtonsGame, init) {
 	ButtonsGameImpl game;
 	auto leds = game.getLights();
 	for (const auto& state: leds)
 		EXPECT_EQ(state, LedState::OFF) << "Expected all leds off";
 }
 
-TEST(VTechGame, onButtonPressValid) {
+TEST(ButtonsGame, onButtonPressValid) {
 	ButtonsGameImpl game;
 	game.onButtonPress('A');
 	game.onButtonPress('B');
@@ -27,7 +27,7 @@ TEST(VTechGame, onButtonPressValid) {
 	}
 }
 
-TEST(VTechGame, singlePress) {
+TEST(ButtonsGame, singlePress) {
 	{
 		ButtonsGameImpl game("ABC");
 		game.onButtonPress('A');
@@ -57,7 +57,7 @@ TEST(VTechGame, singlePress) {
 	}
 }
 
-TEST(VTechGame, doublePress) {
+TEST(ButtonsGame, doublePress) {
 	{
 		ButtonsGameImpl game("ABC");
 		game.onButtonPress('A');
@@ -100,7 +100,7 @@ TEST(VTechGame, doublePress) {
 	}
 }
 
-TEST(VTechGame, triplePress) {
+TEST(ButtonsGame, triplePress) {
 	{
 		ButtonsGameImpl game("ABC");
 		game.onButtonPress('A');

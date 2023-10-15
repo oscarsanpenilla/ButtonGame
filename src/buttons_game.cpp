@@ -3,7 +3,7 @@
 #include "games/impl/buttons_game_impl.h"
 #include "errors.h"
 
-namespace VTech {
+namespace VT {
 
 static std::ostream& operator << (std::ostream& os, const LedState& s);
 
@@ -31,7 +31,7 @@ void ButtonsGameImpl::generatePass() {
 	secret_combination_ = password_generator_->generate();
 }
 
-LEDstates VTech::ButtonsGameImpl::getLights() {
+LEDstates VT::ButtonsGameImpl::getLights() {
 	return led_states_;
 }
 
@@ -50,6 +50,8 @@ void ButtonsGameImpl::run()
 
 		printGameStatus();
 
+		// TODO: remove before submit code
+		std::cout << "pass: " << secret_combination_ << "\n";
 		while (!passValidation()) {
 
 			std::cout << "Press one of the Following letters on your keyboard A B C : ";
@@ -131,4 +133,4 @@ std::ostream &operator<<(std::ostream &os, const LedState &s) {
 	return os;
 }
 
-}//namespace VTech
+}//namespace VT

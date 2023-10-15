@@ -3,7 +3,7 @@
 #include <memory>
 #include "games/buttons_game.h"
 
-namespace VTech {
+namespace VT {
 
 class ButtonsGameImpl {
 public:
@@ -29,5 +29,5 @@ public:
 	std::unique_ptr<PasswordGenerator> password_generator_;
 };
 
-}//namespace VTech
+}//namespace VT
 
