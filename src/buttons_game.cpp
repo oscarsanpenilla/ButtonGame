@@ -94,7 +94,6 @@ void ButtonsGameImpl::run()
 
 void ButtonsGameImpl::printGameStatus() {
 	std::cout << "History: " << btn_history_ << "\n";
-	std::cout << "Current: " << combination_ << "\n";
 	LEDstates leds = light_controller_->getLights();
 	for (size_t i = 0; i < leds.size(); ++i)
 		std::cout << "LED" << i + 1 << ": " << leds.at(i) << "\n";
