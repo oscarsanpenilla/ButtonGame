@@ -107,8 +107,9 @@ void ButtonsGameImpl::onButtonPress(char btn)
 	setLights(new_state);
 
 	// Update curr_idx and ensure it's within the range
-	curr_idx_ = (curr_idx_ + 1) % 3;
-	if (combination_.size() >= 3) combination_.clear();
+	const int pass_size = secret_combination_.size();
+	curr_idx_ = (curr_idx_ + 1) % pass_size;
+	if (combination_.size() >= pass_size) combination_.clear();
 	combination_ += btn;
 	btn_history_ += btn;
 
