@@ -10,6 +10,7 @@ include_directories(
 set(SRC_FILES
   src/buttons_game.cpp
   src/password_generator.cpp
+  src/light_contoller.cpp
 
   include/errors.h
   include/games/impl/buttons_game_impl.h

@@ -3,6 +3,7 @@
 #include "games/impl/buttons_game_impl.h"
 #include "errors.h"
 #include "password_generator.h"
+#include "hardware/light_controller.h"
 
 namespace VT {
 
@@ -18,6 +19,7 @@ void ButtonsGame::onButtonPress(char btn) { impl_->onButtonPress(btn); }
 
 ButtonsGameImpl::ButtonsGameImpl(const std::string &secret_combination)
 	: valid_chars_ (std::vector<char>{'A', 'B', 'C'})
+	, light_controller_(std::make_unique<LightController>())
 {
 	if (!secret_combination.empty())
 		secret_combination_ = secret_combination;
@@ -27,13 +29,15 @@ ButtonsGameImpl::ButtonsGameImpl(const std::string &secret_combination)
 	reset();
 }
 
+ButtonsGameImpl::~ButtonsGameImpl() = default;
+
 void ButtonsGameImpl::generatePass() {
 	password_generator_ = std::make_unique<PasswordGenerator>(valid_chars_);
 	secret_combination_ = password_generator_->generate();
 }
 
 LEDstates VT::ButtonsGameImpl::getLights() const {
-	return led_states_;
+	return light_controller_->getLights();
 }
 
 void ButtonsGameImpl::reset() {
@@ -41,7 +45,7 @@ void ButtonsGameImpl::reset() {
 	curr_idx_ = 0;
 	btn_history_ = "";
 	combination_ = "";
-	led_states_ = {LedState::OFF, LedState::OFF, LedState::OFF};
+	light_controller_->setLights({LedState::OFF, LedState::OFF, LedState::OFF});
 }
 
 void ButtonsGameImpl::run()
@@ -90,8 +94,9 @@ void ButtonsGameImpl::run()
 void ButtonsGameImpl::printGameStatus() {
 	std::cout << "History: " << btn_history_ << "\n";
 	std::cout << "Current: " << combination_ << "\n";
-	for (size_t i = 0; i < led_states_.size(); ++i)
-		std::cout << "LED" << i + 1 << ": " << led_states_.at(i) << "\n";
+	LEDstates leds = light_controller_->getLights();
+	for (size_t i = 0; i < leds.size(); ++i)
+		std::cout << "LED" << i + 1 << ": " << leds.at(i) << "\n";
 }
 
 void ButtonsGameImpl::onButtonPress(char btn)
@@ -130,7 +135,7 @@ void ButtonsGameImpl::onButtonPress(char btn)
 }
 
 void ButtonsGameImpl::setLights(const LEDstates &states) {
-	led_states_ = states;
+	light_controller_->setLights(states);
 }
 
 void ButtonsGameImpl::inputValidation(char input) {

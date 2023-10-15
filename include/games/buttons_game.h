@@ -8,14 +8,6 @@ struct GameInterface {
 	virtual void run () = 0;
 };
 
-enum class LedState {
-	OFF,
-	GREEN,
-	RED,
-	ORANGE
-};
-
-using LEDstates = std::vector<LedState>;
 class ButtonsGameImpl;
 class ButtonsGame: public GameInterface {
 public:
