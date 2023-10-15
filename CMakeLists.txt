@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(VTechButtonGame)
+project(ButtonGame)
 
 set(CMAKE_CXX_STANDARD 17)
 
@@ -16,7 +16,7 @@ set(SRC_FILES
   include/games/impl/buttons_game_impl.h
 )
 
-add_executable(VTechButtonGame main.cpp ${SRC_FILES})
+add_executable(ButtonGame main.cpp ${SRC_FILES})
 
 ##################
 # Tests
