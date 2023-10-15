@@ -14,6 +14,6 @@ add_executable(VTechButtonGame main.cpp src/buttons_game.cpp include/errors.h in
 ##################
 find_package(GTest REQUIRED)
 enable_testing()
-add_executable(game_tests tests/main.cpp src/buttons_game.cpp include/errors.h include/games/impl/buttons_game_impl.h)
+add_executable(game_tests tests/test_main.cpp src/buttons_game.cpp include/errors.h include/games/impl/buttons_game_impl.h)
 target_include_directories(game_tests PRIVATE include)
 target_link_libraries(game_tests GTest::GTest GTest::Main)
