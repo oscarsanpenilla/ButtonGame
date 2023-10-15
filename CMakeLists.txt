@@ -21,8 +21,10 @@ add_executable(VTechButtonGame main.cpp ${SRC_FILES})
 ##################
 # Tests
 ##################
-find_package(GTest REQUIRED)
-enable_testing()
-add_executable(game_tests tests/test_main.cpp ${SRC_FILES})
-target_include_directories(game_tests PRIVATE include)
-target_link_libraries(game_tests GTest::GTest GTest::Main)
+find_package(GTest)
+if (${GTest_FOUND})
+  enable_testing()
+  add_executable(game_tests tests/test_main.cpp ${SRC_FILES})
+  target_include_directories(game_tests PRIVATE include)
+  target_link_libraries(game_tests GTest::GTest GTest::Main)
+endif ()
