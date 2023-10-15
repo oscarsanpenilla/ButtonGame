@@ -27,6 +27,7 @@ public:
 	LEDstates led_states_;
 	std::vector<char> valid_chars_;
 	std::unique_ptr<PasswordGenerator> password_generator_;
+	bool usr_won_ = false;
 };
 
 }//namespace VT

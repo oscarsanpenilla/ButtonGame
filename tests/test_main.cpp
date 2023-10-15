@@ -147,6 +147,23 @@ TEST(ButtonsGame, triplePress) {
 	}
 }
 
+TEST(ButtonsGame, treeGreenWin) {
+	ButtonsGameImpl game("AAA");
+	game.onButtonPress('A');
+	game.onButtonPress('A');
+	game.onButtonPress('A');
+	ASSERT_TRUE(game.usr_won_) << "User supposed to won here!";
+
+	game.reset();
+
+	game.onButtonPress('B');
+	game.onButtonPress('A');
+	game.onButtonPress('A');
+	ASSERT_FALSE(game.usr_won_);
+	game.onButtonPress('A');
+	ASSERT_TRUE(game.usr_won_) << "User supposed to won after 3 green lights!";
+}
+
 int main(int argc, char **argv) {
 	::testing::InitGoogleTest(&argc, argv);
 	return RUN_ALL_TESTS();

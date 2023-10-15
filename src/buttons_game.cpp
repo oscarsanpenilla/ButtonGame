@@ -36,6 +36,7 @@ LEDstates VT::ButtonsGameImpl::getLights() {
 }
 
 void ButtonsGameImpl::reset() {
+	usr_won_ = false;
 	curr_idx_ = 0;
 	btn_history_ = "";
 	combination_ = "";
@@ -50,7 +51,7 @@ void ButtonsGameImpl::run()
 
 		printGameStatus();
 
-		while (!passValidation()) {
+		while (!usr_won_) {
 
 		key_in:
 			char btn_input;
@@ -112,6 +113,7 @@ void ButtonsGameImpl::onButtonPress(char btn)
 	if (combination_.size() >= pass_size) combination_.clear();
 	combination_ += btn;
 	btn_history_ += btn;
+	usr_won_ = passValidation();
 
 }
 
@@ -126,7 +128,9 @@ void ButtonsGameImpl::inputValidation(char input) {
 }
 
 bool ButtonsGameImpl::passValidation() {
-	return secret_combination_ == combination_;
+	bool won = true;
+	for (const auto& s: getLights()) { won &= s == LedState::GREEN; }
+	return won;
 }
 
 std::ostream &operator<<(std::ostream &os, const LedState &s) {
