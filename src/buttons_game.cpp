@@ -5,6 +5,8 @@
 
 namespace VTech {
 
+static std::ostream& operator << (std::ostream& os, const LedState& s);
+
 ButtonsGame::ButtonsGame() : impl_(std::make_unique<ButtonsGameImpl>()) { }
 
 ButtonsGame::~ButtonsGame() = default;
@@ -14,14 +16,14 @@ void ButtonsGame::run() { impl_->run(); }
 void ButtonsGame::onButtonPress(char btn) { impl_->onButtonPress(btn); }
 
 ButtonsGameImpl::ButtonsGameImpl(const std::string &secret_combination)
-		: valid_chars_ (std::vector<char>{'A', 'B', 'C'})
+	: valid_chars_ (std::vector<char>{'A', 'B', 'C'})
 {
 	if (!secret_combination.empty())
 		secret_combination_ = secret_combination;
 	else
 		generatePass();
 
-	setLights({LedState::OFF, LedState::OFF, LedState::OFF});
+	reset();
 }
 
 void ButtonsGameImpl::generatePass() {
@@ -33,13 +35,20 @@ LEDstates VTech::ButtonsGameImpl::getLights() {
 	return led_states_;
 }
 
+void ButtonsGameImpl::reset() {
+	curr_idx_ = 0;
+	btn_history_ = "";
+	combination_ = "";
+	led_states_ = {LedState::OFF, LedState::OFF, LedState::OFF};
+}
+
 void ButtonsGameImpl::run()
 {
 	while (true) {
-
+		reset();
 		generatePass();
 
-		// Print game status here
+		printGameStatus();
 
 		while (!passValidation()) {
 
@@ -50,12 +59,19 @@ void ButtonsGameImpl::run()
 
 			onButtonPress(btn_input);
 
-			// Print game status here
+			printGameStatus();
 		}
 
 		std::cout << "Congrats! You've found the secret code.\n";
-		std::cout << "Starting new game...\n";
+		std::cout << "Starting new game...\n\n";
 	}
+}
+
+void ButtonsGameImpl::printGameStatus() {
+	std::cout << "History: " << btn_history_ << "\n";
+	std::cout << "Current: " << combination_ << "\n";
+	for (size_t i = 0; i < led_states_.size(); ++i)
+		std::cout << "LED" << i + 1 << ": " << led_states_.at(i) << "\n";
 }
 
 void ButtonsGameImpl::onButtonPress(char btn)
@@ -85,6 +101,10 @@ void ButtonsGameImpl::onButtonPress(char btn)
 
 	// Update curr_idx and ensure it's within the range
 	curr_idx_ = (curr_idx_ + 1) % 3;
+	if (combination_.size() >= 3) combination_.clear();
+	combination_ += btn;
+	btn_history_ += btn;
+
 }
 
 void ButtonsGameImpl::setLights(const LEDstates &states) {
@@ -101,11 +121,14 @@ bool ButtonsGameImpl::passValidation() {
 	return secret_combination_ == combination_;
 }
 
-// TODO: implement game console output
-//	std::ostream &VTech::operator<<(std::ostream &os, const VTech::ButtonsGame &game) {
-//		os << "History: " << game.combination_ << "\n";
-////	os << "LEDs: " << game.led_states_[0] << "\n";
-//		return os;
-//	}
+std::ostream &operator<<(std::ostream &os, const LedState &s) {
+	switch (s) {
+		case LedState::OFF: os << "OFF"; break;
+		case LedState::GREEN: os << "GREEN"; break;
+		case LedState::RED: os << "RED"; break;
+		case LedState::ORANGE: os << "ORANGE"; break;
+	}
+	return os;
+}
 
 }//namespace VTech
